@@ -1,20 +1,15 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import GameCard from "./GameCard";
+import Navbar from "./Navbar";
 
 function Home() {
 
     const [games, setGames] = useState([]);
-    const navigate = useNavigate();
 
-    const user = JSON.parse(localStorage.getItem("user"));
-
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-
-        navigate("/login");
-    };
+    const [search, setSearch] = useState("");
+    const [genre, setGenre] = useState("All");
+    const [platform, setPlatform] = useState("All");
 
     useEffect(() => {
 
@@ -29,65 +24,156 @@ function Home() {
 
     }, []);
 
+
+    // GET UNIQUE GENRES
+    const genres = [
+        "All",
+        ...new Set(
+            games
+                .map((game) => game.genre)
+                .filter(Boolean)
+        )
+    ];
+
+
+    // GET UNIQUE PLATFORMS
+    const platforms = [
+        "All",
+        ...new Set(
+            games
+                .map((game) => game.platform)
+                .filter(Boolean)
+        )
+    ];
+
+
+    // FILTER GAMES
+    const filteredGames = games.filter((game) => {
+
+        const matchesSearch =
+            game.title
+                .toLowerCase()
+                .includes(search.toLowerCase());
+
+        const matchesGenre =
+            genre === "All" ||
+            game.genre === genre;
+
+        const matchesPlatform =
+            platform === "All" ||
+            game.platform === platform;
+
+        return (
+            matchesSearch &&
+            matchesGenre &&
+            matchesPlatform
+        );
+
+    });
+
+
     return (
-        <div className="app">
+        <div>
 
-            <header className="navbar">
+            <Navbar />
+            
+            {/* MAIN CONTENT */}
 
-                <h1>🎮 Game Library</h1>
+            <main className="home-page">
 
-                <nav>
-
-                    <Link to="/">Home</Link>
-
-                    {user ? (
-                        <>
-                            <Link to="/library">My Library</Link>
-
-                            <span>
-                                Welcome, {user.username}
-                            </span>
-
-                            <button onClick={handleLogout}>
-                                Logout
-                            </button>
-                        </>
-                    ) : (
-                        <>
-                            <Link to="/login">Login</Link>
-
-                            <Link to="/register">
-                                Register
-                            </Link>
-                        </>
-                    )}
-
-                </nav>
-
-            </header>
+                <h1>
+                    Browse Games
+                </h1>
 
 
-            <main>
+                {/* SEARCH */}
 
-                <section className="hero">
+                <div className="search-container">
 
-                    <h1>Discover Your Next Game</h1>
+                    <input
+                        type="text"
+                        placeholder="Search games..."
+                        value={search}
+                        onChange={(e) =>
+                            setSearch(e.target.value)
+                        }
+                    />
+
+                </div>
+
+
+                {/* FILTERS */}
+
+                <div className="filters">
+
+                    <select
+                        value={genre}
+                        onChange={(e) =>
+                            setGenre(e.target.value)
+                        }
+                    >
+
+                        {genres.map((item) => (
+
+                            <option
+                                key={item}
+                                value={item}
+                            >
+                                {item === "All"
+                                    ? "All Genres"
+                                    : item}
+                            </option>
+
+                        ))}
+
+                    </select>
+
+
+                    <select
+                        value={platform}
+                        onChange={(e) =>
+                            setPlatform(e.target.value)
+                        }
+                    >
+
+                        {platforms.map((item) => (
+
+                            <option
+                                key={item}
+                                value={item}
+                            >
+                                {item === "All"
+                                    ? "All Platforms"
+                                    : item}
+                            </option>
+
+                        ))}
+
+                    </select>
+
+                </div>
+
+
+                {/* GAME COUNT */}
+
+                <p>
+                    Showing {filteredGames.length} of {games.length} games
+                </p>
+
+
+                {/* GAME GRID */}
+
+                {filteredGames.length === 0 ? (
 
                     <p>
-                        Explore games, build your collection,
-                        and track your gaming journey.
+                        No games found.
                     </p>
 
-                </section>
-
-
-                <section className="games-section">
-
-                    <h2>Game Library</h2>
+                ) : (
 
                     <div className="game-grid">
 
-                        {games.map((game) => (
+                        {filteredGames.map((game) => (
 
                             <GameCard
                                 key={game.id}
@@ -98,7 +184,7 @@ function Home() {
 
                     </div>
 
-                </section>
+                )}
 
             </main>
 
