@@ -9,10 +9,14 @@ app.use(express.json());
 const gamesRouter = require("./routes/games");
 const usersRouter = require("./routes/users");
 const libraryRouter = require("./routes/library");
+const adminRouter = require("./routes/admin");
+const reviewsRoutes = require("./routes/reviews");
 
 app.use("/games", gamesRouter);
 app.use("/users", usersRouter);
 app.use("/library", libraryRouter);
+app.use("/admin", adminRouter);
+app.use("/reviews", reviewsRoutes);
 
 app.get("/", (req, res) => {
     res.json({

@@ -14,9 +14,11 @@ function Navbar() {
         localStorage.removeItem("user");
 
         navigate("/login");
+
     };
 
     return (
+
         <header className="navbar">
 
             <h1>
@@ -30,21 +32,37 @@ function Navbar() {
                 </Link>
 
                 {user ? (
+
                     <>
+
                         <Link to="/library">
                             My Library
                         </Link>
+
+                        {user.role === "admin" && (
+
+                            <Link to="/admin">
+                                Admin Dashboard
+                            </Link>
+
+                        )}
 
                         <span>
                             Welcome, {user.username}
                         </span>
 
-                        <button onClick={handleLogout}>
+                        <button
+                            onClick={handleLogout}
+                        >
                             Logout
                         </button>
+
                     </>
+
                 ) : (
+
                     <>
+
                         <Link to="/login">
                             Login
                         </Link>
@@ -52,12 +70,15 @@ function Navbar() {
                         <Link to="/register">
                             Register
                         </Link>
+
                     </>
+
                 )}
 
             </nav>
 
         </header>
+
     );
 }
 

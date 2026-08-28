@@ -6,6 +6,8 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Library from "./components/Library";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Admin from "./components/Admin";
+import AdminRoute from "./components/AdminRoute";
 
 function App() {
 
@@ -40,6 +42,14 @@ function App() {
                         <ProtectedRoute>
                             <Library />
                         </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/admin"
+                    element={
+                        <AdminRoute>
+                            <Admin />
+                        </AdminRoute>
                     }
                 />
 

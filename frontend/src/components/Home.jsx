@@ -1,31 +1,40 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import GameCard from "./GameCard";
 import Navbar from "./Navbar";
 
 function Home() {
 
     const [games, setGames] = useState([]);
-
     const [search, setSearch] = useState("");
     const [genre, setGenre] = useState("All");
     const [platform, setPlatform] = useState("All");
 
+
+    // GET ALL GAMES
+
     useEffect(() => {
 
         fetch("http://localhost:5000/games")
+
             .then((response) => response.json())
+
             .then((data) => {
+
                 setGames(data);
+
             })
+
             .catch((error) => {
+
                 console.log("Error fetching games:", error);
+
             });
 
     }, []);
 
 
     // GET UNIQUE GENRES
+
     const genres = [
         "All",
         ...new Set(
@@ -37,6 +46,7 @@ function Home() {
 
 
     // GET UNIQUE PLATFORMS
+
     const platforms = [
         "All",
         ...new Set(
@@ -48,6 +58,7 @@ function Home() {
 
 
     // FILTER GAMES
+
     const filteredGames = games.filter((game) => {
 
         const matchesSearch =
@@ -55,13 +66,16 @@ function Home() {
                 .toLowerCase()
                 .includes(search.toLowerCase());
 
+
         const matchesGenre =
             genre === "All" ||
             game.genre === genre;
 
+
         const matchesPlatform =
             platform === "All" ||
             game.platform === platform;
+
 
         return (
             matchesSearch &&
@@ -73,10 +87,12 @@ function Home() {
 
 
     return (
+
         <div>
 
             <Navbar />
-            
+
+
             {/* MAIN CONTENT */}
 
             <main className="home-page">
@@ -106,6 +122,8 @@ function Home() {
 
                 <div className="filters">
 
+                    {/* GENRE FILTER */}
+
                     <select
                         value={genre}
                         onChange={(e) =>
@@ -119,15 +137,19 @@ function Home() {
                                 key={item}
                                 value={item}
                             >
+
                                 {item === "All"
                                     ? "All Genres"
                                     : item}
+
                             </option>
 
                         ))}
 
                     </select>
 
+
+                    {/* PLATFORM FILTER */}
 
                     <select
                         value={platform}
@@ -142,9 +164,11 @@ function Home() {
                                 key={item}
                                 value={item}
                             >
+
                                 {item === "All"
                                     ? "All Platforms"
                                     : item}
+
                             </option>
 
                         ))}
@@ -189,7 +213,9 @@ function Home() {
             </main>
 
         </div>
+
     );
+
 }
 
 export default Home;

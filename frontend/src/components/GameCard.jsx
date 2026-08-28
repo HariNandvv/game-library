@@ -5,7 +5,10 @@ function GameCard({ game }) {
     const navigate = useNavigate();
 
     return (
+
         <div className="game-card">
+
+            {/* GAME COVER */}
 
             <div className="game-image">
 
@@ -21,24 +24,34 @@ function GameCard({ game }) {
             </div>
 
 
+            {/* GAME INFORMATION */}
+
             <div className="game-info">
 
-                <h2>{game.title}</h2>
+                <h2>
+                    {game.title}
+                </h2>
 
-                <p className="genre">
+
+                <span className="genre">
                     {game.genre}
+                </span>
+
+
+                <p className="platform">
+                    🎮 {game.platform}
                 </p>
 
-                <p>
-                    Platform: {game.platform}
-                </p>
 
                 <p className="rating">
-                    ⭐ {game.rating}
+                    ⭐ {game.rating}/10
                 </p>
 
+
                 <button
-                    onClick={() => navigate(`/game/${game.id}`)}
+                    onClick={() =>
+                        navigate(`/game/${game.id}`)
+                    }
                 >
                     View Details
                 </button>
@@ -46,6 +59,7 @@ function GameCard({ game }) {
             </div>
 
         </div>
+
     );
 }
 
