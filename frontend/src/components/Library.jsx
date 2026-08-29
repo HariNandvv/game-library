@@ -137,24 +137,28 @@ function Library() {
                 <div className="library-filters">
 
                     <button
+                        className={filter === "All" ? "active-filter" : ""}
                         onClick={() => setFilter("All")}
                     >
                         All
                     </button>
 
                     <button
+                        className={filter === "Wishlist" ? "active-filter" : ""}
                         onClick={() => setFilter("Wishlist")}
                     >
                         ❤️ Wishlist
                     </button>
 
                     <button
+                        className={filter === "Playing" ? "active-filter" : ""}
                         onClick={() => setFilter("Playing")}
                     >
                         🎮 Playing
                     </button>
 
                     <button
+                        className={filter === "Completed" ? "active-filter" : ""}
                         onClick={() => setFilter("Completed")}
                     >
                         ✅ Completed
@@ -182,7 +186,11 @@ function Library() {
                                 <div className="game-image">
 
                                     <img
-                                        src={`/images/${game.cover_image}`}
+                                        src={
+                                            game.cover_image
+                                                ? `http://localhost:5000/uploads/${game.cover_image}`
+                                                : "https://via.placeholder.com/300x400?text=No+Image"
+                                        }
                                         alt={game.title}
                                     />
 

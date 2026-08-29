@@ -34,12 +34,15 @@ function Home() {
 
 
     // GET UNIQUE GENRES
-
     const genres = [
         "All",
         ...new Set(
             games
-                .map((game) => game.genre)
+                .flatMap((game) =>
+                    game.genre
+                        ? game.genre.split(",").map((item) => item.trim())
+                        : []
+                )
                 .filter(Boolean)
         )
     ];
@@ -51,15 +54,26 @@ function Home() {
         "All",
         ...new Set(
             games
-                .map((game) => game.platform)
-                .filter(Boolean)
+                .flatMap((game) =>
+                    game.platform
+                        ? game.platform.split(",").map((platform) => platform.trim())
+                        : []
+                )
         )
     ];
 
 
     // FILTER GAMES
-
     const filteredGames = games.filter((game) => {
+
+        const gameGenres = game.genre
+            ? game.genre.split(",").map((item) => item.trim())
+            : [];
+
+        const gamePlatforms = game.platform
+            ? game.platform.split(",").map((item) => item.trim())
+            : [];
+
 
         const matchesSearch =
             game.title
@@ -69,12 +83,12 @@ function Home() {
 
         const matchesGenre =
             genre === "All" ||
-            game.genre === genre;
+            gameGenres.includes(genre);
 
 
         const matchesPlatform =
             platform === "All" ||
-            game.platform === platform;
+            gamePlatforms.includes(platform);
 
 
         return (
@@ -82,7 +96,6 @@ function Home() {
             matchesGenre &&
             matchesPlatform
         );
-
     });
 
 

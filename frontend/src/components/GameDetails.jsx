@@ -437,11 +437,14 @@ function GameDetails() {
                     {/* GAME IMAGE */}
 
                     <img
-                        src={`/images/${game.cover_image}`}
+                        src={
+                            game.cover_image
+                                ? `http://localhost:5000/uploads/${game.cover_image}`
+                                : "https://via.placeholder.com/300x400?text=No+Image"
+                        }
                         alt={game.title}
                         className="details-image"
                     />
-
 
                     {/* GAME INFORMATION */}
 

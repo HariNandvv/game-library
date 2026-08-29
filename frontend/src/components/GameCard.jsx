@@ -15,7 +15,7 @@ function GameCard({ game }) {
                 <img
                     src={
                         game.cover_image
-                            ? `/images/${game.cover_image}`
+                            ? `http://localhost:5000/uploads/${game.cover_image}`
                             : "https://via.placeholder.com/300x400?text=No+Image"
                     }
                     alt={game.title}
