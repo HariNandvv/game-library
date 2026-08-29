@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function Register() {
 
@@ -7,13 +7,17 @@ function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const [showPassword, setShowPassword] = useState(false);
     const [message, setMessage] = useState("");
 
     const navigate = useNavigate();
 
+
     const handleSubmit = async (e) => {
 
         e.preventDefault();
+
+        setMessage("");
 
         try {
 
@@ -38,7 +42,9 @@ function Register() {
 
             if (response.ok) {
 
-                setMessage("Registration successful!");
+                setMessage(
+                    "Registration successful!"
+                );
 
                 setTimeout(() => {
                     navigate("/login");
@@ -47,72 +53,153 @@ function Register() {
             } else {
 
                 setMessage(data.message);
+
             }
 
         } catch (error) {
 
             console.log(error);
+
             setMessage("Server error");
+
         }
     };
 
+
     return (
-        <div className="login-page">
 
-            <div className="login-box">
+        <div className="auth-page">
 
-                <h1>🎮 Game Library</h1>
+            <div className="auth-box">
 
-                <h2>Create Account</h2>
+                {/* LOGO */}
 
-                <form onSubmit={handleSubmit}>
+                <div className="auth-logo">
+                    🎮
+                </div>
+
+
+                <h1>
+                    Game Library
+                </h1>
+
+                <p className="auth-subtitle">
+                    Create your account
+                </p>
+
+
+                {/* REGISTER FORM */}
+
+                <form
+                    className="auth-form"
+                    onSubmit={handleSubmit}
+                >
+
+                    {/* USERNAME */}
+
+                    <label>
+                        Username
+                    </label>
 
                     <input
                         type="text"
-                        placeholder="Username"
+                        placeholder="Enter your username"
                         value={username}
                         onChange={(e) =>
                             setUsername(e.target.value)
                         }
+                        required
                     />
+
+
+                    {/* EMAIL */}
+
+                    <label>
+                        Email
+                    </label>
 
                     <input
                         type="email"
-                        placeholder="Email"
+                        placeholder="Enter your email"
                         value={email}
                         onChange={(e) =>
                             setEmail(e.target.value)
                         }
+                        required
                     />
 
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) =>
-                            setPassword(e.target.value)
-                        }
-                    />
 
-                    <button type="submit">
-                        Register
+                    {/* PASSWORD */}
+
+                    <label>
+                        Password
+                    </label>
+
+                    <div className="password-container">
+
+                        <input
+                            type={
+                                showPassword
+                                    ? "text"
+                                    : "password"
+                            }
+                            placeholder="Create a password"
+                            value={password}
+                            onChange={(e) =>
+                                setPassword(e.target.value)
+                            }
+                            required
+                        />
+
+                        <button
+                            type="button"
+                            className="password-toggle"
+                            onClick={() =>
+                                setShowPassword(
+                                    !showPassword
+                                )
+                            }
+                        >
+                            {showPassword
+                                ? "🙈"
+                                : "👁️"}
+                        </button>
+
+                    </div>
+
+
+                    {/* REGISTER BUTTON */}
+
+                    <button
+                        type="submit"
+                        className="auth-button"
+                    >
+                        Create Account
                     </button>
 
                 </form>
 
+
+                {/* MESSAGE */}
+
                 {message && (
-                    <p>{message}</p>
+                    <p className="auth-message">
+                        {message}
+                    </p>
                 )}
 
-                <p>
-                    Already have an account?
-                </p>
 
-                <button
-                    onClick={() => navigate("/login")}
-                >
-                    Login
-                </button>
+                {/* LOGIN LINK */}
+
+                <p className="auth-switch">
+
+                    Already have an account?
+
+                    <Link to="/login">
+                        Login
+                    </Link>
+
+                </p>
 
             </div>
 
